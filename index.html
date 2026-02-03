@@ -9,23 +9,23 @@
 body {
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #020617);
+  background: linear-gradient(135deg, #0b1220, #020617);
   color: #e5e7eb;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: background 1.5s ease;
+  transition: background 1.6s ease;
   overflow: hidden;
 }
 
 .app {
   width: 92%;
-  max-width: 720px;
+  max-width: 760px;
   background: #020617;
-  border-radius: 18px;
-  padding: 40px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  border-radius: 22px;
+  padding: 45px;
+  box-shadow: 0 35px 90px rgba(0,0,0,0.65);
 }
 
 /* Header */
@@ -49,17 +49,17 @@ body {
   height: 8px;
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 }
 
 .progress {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #3b82f6, #22d3ee);
+  background: linear-gradient(90deg, #38bdf8, #22d3ee);
   transition: width 0.4s ease;
 }
 
-/* Questions */
+/* Question */
 .q-count {
   color: #94a3b8;
   font-size: 0.9em;
@@ -67,7 +67,7 @@ body {
 }
 
 .question {
-  font-size: 1.4em;
+  font-size: 1.45em;
   margin-bottom: 25px;
 }
 
@@ -75,7 +75,7 @@ body {
 .option {
   background: #020617;
   border: 1px solid #1e293b;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 16px 18px;
   margin-bottom: 14px;
   cursor: pointer;
@@ -83,23 +83,22 @@ body {
 }
 
 .option:hover {
-  border-color: #3b82f6;
-  background: #020617;
+  border-color: #38bdf8;
   transform: translateY(-2px);
 }
 
 /* ================= VALENTINE MODE ================= */
 body.valentine {
-  background: radial-gradient(circle at top, #ff9acb, #ff5fa2, #ff2e63);
+  background: radial-gradient(circle at top, #ffb3d9, #ff69b4, #ff2e63);
   color: #4a044e;
 }
 
 body.valentine .app {
-  background: rgba(255,255,255,0.95);
-  box-shadow: 0 25px 70px rgba(255,0,128,0.4);
+  background: rgba(255,255,255,0.96);
+  box-shadow: 0 30px 80px rgba(255,0,128,0.45);
 }
 
-/* Cute elements */
+/* Floating hearts etc */
 .float {
   position: fixed;
   bottom: -10%;
@@ -113,16 +112,21 @@ body.valentine .app {
   to { transform: translateY(-130vh); }
 }
 
-/* Valentine buttons */
+/* Buttons */
 .val-btn {
   background: #ff2e63;
   color: white;
   border-radius: 999px;
-  padding: 14px 34px;
+  padding: 14px 36px;
   font-size: 1.05em;
   border: none;
   cursor: pointer;
   margin: 15px;
+  transition: transform 0.2s ease;
+}
+
+.val-btn:hover {
+  transform: scale(1.05);
 }
 
 #no {
@@ -139,7 +143,19 @@ body.valentine .app {
   object-fit: cover;
   margin: 20px auto;
   display: block;
-  box-shadow: 0 15px 35px rgba(255,0,128,0.4);
+  box-shadow: 0 18px 40px rgba(255,0,128,0.4);
+}
+
+/* Kisses / hugs */
+.pop {
+  font-size: 2em;
+  animation: pop 1.2s ease forwards;
+}
+
+@keyframes pop {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); }
 }
 </style>
 </head>
@@ -149,7 +165,7 @@ body.valentine .app {
 <div class="app" id="app">
   <div class="header">
     <h1>CAR PERSONALITY ASSESSMENT</h1>
-    <p>Designed for people who genuinely care about cars.</p>
+    <p>Built for people who genuinely care about cars.</p>
   </div>
 
   <div class="progress-wrap">
@@ -161,32 +177,14 @@ body.valentine .app {
 
 <script>
 const questions = [
-  {
-    q: "How do you approach driving?",
-    o: [
-      "Calm, aware, and controlled",
-      "Confident with bursts of speed",
-      "Protective and alert",
-      "Depends on the mood"
-    ]
-  },
-  {
-    q: "What matters most in a car?",
-    o: ["Reliability", "Comfort", "Road presence", "All of it"]
-  },
-  {
-    q: "Your ideal drive?",
-    o: [
-      "Late-night roads and quiet music",
-      "Highway drives",
-      "Food runs that turn into drives",
-      "Just sitting and talking"
-    ]
-  },
-  {
-    q: "People describe you as:",
-    o: ["Dependable", "Protective", "Quietly confident", "A mix"]
-  }
+  { q: "How do you usually drive?", o: ["Calm & aware", "Confident with bursts of speed", "Protective", "Mood-based"] },
+  { q: "What matters most in a car?", o: ["Reliability", "Comfort", "Road presence", "Balance"] },
+  { q: "Your ideal drive looks like:", o: ["Late-night roads", "Highway cruising", "Food runs", "Sitting & talking"] },
+  { q: "You treat your car like:", o: ["A responsibility", "A comfort space", "A personality", "All of the above"] },
+  { q: "Music while driving?", o: ["Low & calm", "Bass heavy", "Whatever fits the mood", "Silence"] },
+  { q: "Your friends would say you’re:", o: ["Dependable", "Protective", "Quietly confident", "Chaotic but safe"] },
+  { q: "Driving makes you feel:", o: ["Grounded", "Free", "In control", "At ease"] },
+  { q: "Long drives are for:", o: ["Thinking", "Talking", "Music", "Everything"] }
 ];
 
 let step = 0;
@@ -200,7 +198,7 @@ function loadQ() {
   progress.style.width = (step / questions.length) * 100 + "%";
   content.innerHTML = `
     <div class="q-count">Question ${step + 1} of ${questions.length}</div>
-    <div class="question">${q.q}</div>
+    <div class="question">🚗 ${q.q}</div>
     ${q.o.map(opt => `<div class="option" onclick="next()">${opt}</div>`).join("")}
   `;
 }
@@ -222,9 +220,8 @@ function process() {
 
 function result() {
   content.innerHTML = `
-    <div class="question">Your Result</div>
     <h1>Kia Seltos</h1>
-    <p>Strong presence. Reliable. Protective without trying.</p>
+    <p>Strong presence. Dependable. Protective without trying.</p>
     <p>The kind of car that feels familiar and safe.</p>
     <button class="option" onclick="passenger()">Continue</button>
   `;
@@ -257,36 +254,39 @@ function run() {
   n.style.top = Math.random() * 80 + "%";
 }
 
-/* After YES */
-const lines = [
+/* Emotional sequence */
+const moments = [
   "I like you. A lot.",
-  "You make things feel safe without trying.",
   "I really enjoy being around you.",
+  "You make things feel calm and safe.",
   "You’re annoying. But in a good way.",
-  "I’m excited about where this could go."
+  "I feel excited about this.",
+  "Sending you a virtual hug 🤍",
+  "Okay now a kiss 😘"
 ];
 
-let idx = 0;
+let m = 0;
 
 function yes() {
-  showLine();
+  showMoment();
 }
 
-function showLine() {
-  if (idx >= lines.length) {
+function showMoment() {
+  if (m >= moments.length) {
     end();
     return;
   }
+
   content.innerHTML = `
     <img src="shonu.jpg.JPG" class="photo">
-    <p>${lines[idx]}</p>
-    <button class="val-btn" onclick="nextLine()">Next</button>
+    <p class="pop">${moments[m]}</p>
+    <button class="val-btn" onclick="nextMoment()">More</button>
   `;
-  idx++;
+  m++;
 }
 
-function nextLine() {
-  showLine();
+function nextMoment() {
+  showMoment();
 }
 
 function end() {
@@ -298,10 +298,10 @@ function end() {
 
 /* Floating hearts */
 function spawnCute() {
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < 30; i++) {
     const e = document.createElement("div");
     e.className = "float";
-    e.innerHTML = ["💗","🌸","🎈","🌹"][Math.floor(Math.random()*4)];
+    e.innerHTML = ["💗","🌸","🎈","🌹","💋"][Math.floor(Math.random()*5)];
     e.style.left = Math.random() * 100 + "%";
     e.style.animationDuration = 6 + Math.random() * 6 + "s";
     document.body.appendChild(e);
