@@ -1,192 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Application Review Portal</title>
+<meta charset="UTF-8">
+<title>Application Review Portal</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #eef2f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      overflow: hidden;
-    }
+<style>
+/* ================= BASE ================= */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f1f4f8;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: background 2s ease;
+}
 
-    .box {
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 520px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      text-align: center;
-      z-index: 2;
-    }
+.container {
+  background: #ffffff;
+  width: 92%;
+  max-width: 720px;
+  padding: 50px;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+  animation: fadeIn 1s ease forwards;
+}
 
-    h2 { margin-bottom: 15px; }
-    p { font-size: 1.05em; line-height: 1.4; }
+h1, h2 {
+  text-align: center;
+}
 
-    button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 1em;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background: #003865;
-      color: white;
-    }
+p {
+  font-size: 1.05em;
+  line-height: 1.7;
+}
 
-    .option {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      background: #e9ecef;
-      color: black;
-    }
+button {
+  margin-top: 30px;
+  padding: 14px 32px;
+  border-radius: 10px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  background: #003865;
+  color: white;
+}
 
-    #no {
-      background: #adb5bd;
-      position: relative;
-    }
+.option {
+  width: 100%;
+  margin: 12px 0;
+  background: #e9ecef;
+  color: #000;
+}
 
-    .valentine-bg {
-      background-color: #ffe6f0;
-      background-image: url('shonu.jpg.JPG');
-      background-size: 120px;
-      background-repeat: repeat;
-    }
+/* ================= ANIMATIONS ================= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-    .love-line {
-      position: absolute;
-      font-size: 1.2em;
-      color: #d63384;
-      animation: fadeUp 3.5s ease forwards;
-      pointer-events: none;
-    }
+/* ================= VALENTINE MODE ================= */
+body.valentine {
+  background:
+    linear-gradient(rgba(255,182,193,0.9), rgba(255,105,180,0.9)),
+    url('shonu.jpg.JPG');
+  background-size: 150px;
+  background-repeat: repeat;
+}
 
-    @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      20% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; transform: translateY(-40px); }
-    }
-  </style>
+/* Floating hearts & balloons */
+.float {
+  position: fixed;
+  bottom: -10%;
+  font-size: 2.2em;
+  animation: floatUp linear infinite;
+  opacity: 0.85;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-130vh); }
+}
+
+/* Valentine card */
+.val-card {
+  background: rgba(255,255,255,0.93);
+  border-radius: 22px;
+  padding: 55px;
+  max-width: 650px;
+  text-align: center;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+/* Heart-shaped photo */
+.photo-heart {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 30px;
+  background-image: url('shonu.jpg.JPG');
+  background-size: cover;
+  background-position: center;
+  clip-path: polygon(
+    50% 90%, 0% 40%, 25% 0%, 50% 25%, 75% 0%, 100% 40%
+  );
+  animation: pulse 3s ease-in-out infinite;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.35);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Love text */
+.love-text {
+  font-size: 1.6em;
+  color: #c2185b;
+  margin-bottom: 20px;
+}
+
+/* No button chaos */
+#no {
+  position: absolute;
+  background: #adb5bd;
+}
+</style>
 </head>
 
 <body>
 
-<div class="box" id="content">
-  <h2>Application Review Portal</h2>
+<div class="container" id="content">
+  <h1>Application Review Portal</h1>
   <p><strong>Institution:</strong> Heriot-Watt University, Dubai</p>
-  <p><strong>Applicant:</strong> Your Daughter</p>
-  <p><strong>Programme Status:</strong> Under Parent Verification</p>
-  <button onclick="step1()">Proceed</button>
+  <p><strong>Applicant:</strong> Charneet Kaur Bedi</p>
+  <p><strong>Programme:</strong> MSc Business Psychology</p>
+  <p><strong>Intake:</strong> September 2026</p>
+  <p><strong>Status:</strong> Pending Parent / Guardian Review</p>
+  <button onclick="programme()">Proceed to Review</button>
 </div>
 
 <script>
-  const content = document.getElementById("content");
+const content = document.getElementById("content");
 
-  function step1() {
-    content.innerHTML = `
-      <h2>Fee & Financial Review</h2>
-      <p>The annual tuition fee and academic expenses have been reviewed.</p>
-      <p>Do you approve of the financial commitment?</p>
-      <button class="option" onclick="step2()">Approved</button>
-      <button class="option" onclick="step2()">Approved with blessings</button>
-    `;
+/* ========= OFFICIAL FLOW ========= */
+function programme() {
+  content.innerHTML = `
+    <h2>Programme Acknowledgement</h2>
+    <p>The applicant has received a provisional offer for the MSc Business Psychology programme.</p>
+    <p>Please confirm awareness of academic commitment, assessment structure, and attendance requirements.</p>
+    <button class="option" onclick="visa()">Acknowledged</button>
+  `;
+}
+
+function visa() {
+  content.innerHTML = `
+    <h2>Visa & Immigration Consent</h2>
+    <p>This programme requires UAE student visa processing and international residence.</p>
+    <p>Please confirm consent for visa-related responsibilities.</p>
+    <button class="option" onclick="finance()">Consent Granted</button>
+    <button class="option" onclick="finance()">Consent Granted with Guidance</button>
+  `;
+}
+
+function finance() {
+  content.innerHTML = `
+    <h2>Financial Planning Declaration</h2>
+    <p>Please select the primary funding method:</p>
+    <button class="option" onclick="terms()">Self-Funded</button>
+    <button class="option" onclick="terms()">Education Loan</button>
+    <button class="option" onclick="terms()">Scholarship / Mixed Funding</button>
+  `;
+}
+
+function terms() {
+  content.innerHTML = `
+    <h2>Terms & Conditions</h2>
+    <p>By proceeding, you acknowledge continued emotional, financial, and moral support of the applicant.</p>
+    <p>This includes trust in her growth, independence, and future decisions.</p>
+    <button onclick="transition()">Accept & Submit</button>
+  `;
+}
+
+/* ========= TRANSITION ========= */
+function transition() {
+  content.innerHTML = `
+    <h2>Submitting Application…</h2>
+    <p>Please wait while the review is finalised.</p>
+  `;
+  setTimeout(valentineIntro, 3000);
+}
+
+/* ========= VALENTINE ========= */
+function valentineIntro() {
+  document.body.classList.add("valentine");
+  spawnHearts();
+  content.innerHTML = `
+    <div class="val-card">
+      <h2 style="color:#d81b60;">Before this submits…</h2>
+      <p>This was never just an application.</p>
+      <h1>Will you be my Valentine, Shonu? 💖</h1>
+      <button onclick="yes()">YES 💞</button>
+      <button id="no" onmouseover="runAway()">NO 🙃</button>
+    </div>
+  `;
+}
+
+function runAway() {
+  const no = document.getElementById("no");
+  no.style.left = Math.random() * 80 + "%";
+  no.style.top = Math.random() * 80 + "%";
+}
+
+/* ========= EMOTIONAL SLIDES ========= */
+const slides = [
+  "You are my safest place.",
+  "Everything good in me began with you.",
+  "You chose me, every single day.",
+  "I am brave because you believed in me.",
+  "I will always be yours, just as you are mine."
+];
+
+let i = 0;
+
+function yes() {
+  showSlide();
+}
+
+function showSlide() {
+  if (i >= slides.length) {
+    gifts();
+    return;
   }
+  content.innerHTML = `
+    <div class="val-card">
+      <div class="photo-heart"></div>
+      <div class="love-text">${slides[i]}</div>
+      <button onclick="nextSlide()">Next</button>
+    </div>
+  `;
+  i++;
+}
 
-  function step2() {
-    content.innerHTML = `
-      <h2>Loan & Sponsorship</h2>
-      <p>The applicant may require guidance and emotional support.</p>
-      <p>Will you continue standing by her?</p>
-      <button class="option" onclick="step3()">Yes</button>
-      <button class="option" onclick="step3()">Always</button>
-    `;
+function nextSlide() {
+  showSlide();
+}
+
+/* ========= GIFTS ========= */
+function gifts() {
+  content.innerHTML = `
+    <div class="val-card">
+      <h1>Happy Valentine’s Day 💐🍫</h1>
+      <p>Flowers. Chocolates. Love.</p>
+      <p>All of it — because you deserve everything.</p>
+      <h2>I love you forever, Shonu.</h2>
+    </div>
+  `;
+}
+
+/* ========= HEART SPAWN ========= */
+function spawnHearts() {
+  for (let i = 0; i < 35; i++) {
+    const el = document.createElement("div");
+    el.className = "float";
+    el.innerHTML = Math.random() > 0.5 ? "💖" : "🎈";
+    el.style.left = Math.random() * 100 + "%";
+    el.style.animationDuration = 6 + Math.random() * 6 + "s";
+    document.body.appendChild(el);
   }
-
-  function step3() {
-    content.innerHTML = `
-      <h2>Visa & Relocation Consent</h2>
-      <p>This programme involves growth, distance, and independence.</p>
-      <p>Do you consent to this next chapter?</p>
-      <button class="option" onclick="valentine()">Confirmed</button>
-    `;
-  }
-
-  function valentine() {
-    document.body.classList.add("valentine-bg");
-    content.innerHTML = `
-      <h2 style="color:#d63384;">WAIT 💖</h2>
-      <p>One final question before submission…</p>
-      <h2>Will you be my Valentine, Shonu? 💕</h2>
-      <button onclick="yesVal()">YES 💞</button>
-      <button id="no" onmouseover="moveNo()">NO 🙃</button>
-    `;
-  }
-
-  function moveNo() {
-    const btn = document.getElementById("no");
-    btn.style.left = Math.random() * 200 - 100 + "px";
-    btn.style.top = Math.random() * 200 - 100 + "px";
-  }
-
-  function yesVal() {
-    content.innerHTML = `
-      <h2>Approved with Love 💐</h2>
-      <p>You’ve always been my safe place.</p>
-      <p>And today… I just want you to feel how loved you are.</p>
-    `;
-    startLoveShower();
-  }
-
-  function startLoveShower() {
-    const lines = [
-      "Thank you for choosing me every day 💖",
-      "You are my home, always 🏡",
-      "Everything good in me began with you 🌸",
-      "I am brave because you believed in me ✨",
-      "I love you more than words, Shonu 💕"
-    ];
-
-    lines.forEach((text, i) => {
-      setTimeout(() => {
-        const div = document.createElement("div");
-        div.className = "love-line";
-        div.innerText = text;
-        div.style.left = Math.random() * 70 + 10 + "%";
-        div.style.top = Math.random() * 70 + 10 + "%";
-        document.body.appendChild(div);
-
-        setTimeout(() => div.remove(), 3500);
-      }, i * 900);
-    });
-
-    setTimeout(showGifts, 5200);
-  }
-
-  function showGifts() {
-    content.innerHTML = `
-      <h2>One last thing 😌</h2>
-      <p>If you had to choose…</p>
-      <button class="option" onclick="both()">Flowers 🌸</button>
-      <button class="option" onclick="both()">Chocolates 🍫</button>
-    `;
-  }
-
-  function both() {
-    content.innerHTML = `
-      <h2>You don’t have to choose 💖</h2>
-      <h2>You get BOTH 🌸🍫</h2>
-      <p>Happy Valentine’s Day, Shonu.<br>I love you forever.</p>
-    `;
-  }
+}
 </script>
 
 </body>
