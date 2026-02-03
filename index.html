@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Application Review Portal</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 520px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      text-align: center;
+      z-index: 2;
+    }
+
+    h2 { margin-bottom: 15px; }
+    p { font-size: 1.05em; line-height: 1.4; }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #003865;
+      color: white;
+    }
+
+    .option {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      background: #e9ecef;
+      color: black;
+    }
+
+    #no {
+      background: #adb5bd;
+      position: relative;
+    }
+
+    .valentine-bg {
+      background-color: #ffe6f0;
+      background-image: url('shonu.png');
+      background-size: 120px;
+      background-repeat: repeat;
+    }
+
+    .love-line {
+      position: absolute;
+      font-size: 1.2em;
+      color: #d63384;
+      animation: fadeUp 3.5s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-40px); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box" id="content">
+  <h2>Application Review Portal</h2>
+  <p><strong>Institution:</strong> Heriot-Watt University, Dubai</p>
+  <p><strong>Applicant:</strong> Your Daughter</p>
+  <p><strong>Programme Status:</strong> Under Parent Verification</p>
+  <button onclick="step1()">Proceed</button>
+</div>
+
+<script>
+  const content = document.getElementById("content");
+
+  function step1() {
+    content.innerHTML = `
+      <h2>Fee & Financial Review</h2>
+      <p>The annual tuition fee and academic expenses have been reviewed.</p>
+      <p>Do you approve of the financial commitment?</p>
+      <button class="option" onclick="step2()">Approved</button>
+      <button class="option" onclick="step2()">Approved with blessings</button>
+    `;
+  }
+
+  function step2() {
+    content.innerHTML = `
+      <h2>Loan & Sponsorship</h2>
+      <p>The applicant may require guidance and emotional support.</p>
+      <p>Will you continue standing by her?</p>
+      <button class="option" onclick="step3()">Yes</button>
+      <button class="option" onclick="step3()">Always</button>
+    `;
+  }
+
+  function step3() {
+    content.innerHTML = `
+      <h2>Visa & Relocation Consent</h2>
+      <p>This programme involves growth, distance, and independence.</p>
+      <p>Do you consent to this next chapter?</p>
+      <button class="option" onclick="valentine()">Confirmed</button>
+    `;
+  }
+
+  function valentine() {
+    document.body.classList.add("valentine-bg");
+    content.innerHTML = `
+      <h2 style="color:#d63384;">WAIT 💖</h2>
+      <p>One final question before submission…</p>
+      <h2>Will you be my Valentine, Shonu? 💕</h2>
+      <button onclick="yesVal()">YES 💞</button>
+      <button id="no" onmouseover="moveNo()">NO 🙃</button>
+    `;
+  }
+
+  function moveNo() {
+    const btn = document.getElementById("no");
+    btn.style.left = Math.random() * 200 - 100 + "px";
+    btn.style.top = Math.random() * 200 - 100 + "px";
+  }
+
+  function yesVal() {
+    content.innerHTML = `
+      <h2>Approved with Love 💐</h2>
+      <p>You’ve always been my safe place.</p>
+      <p>And today… I just want you to feel how loved you are.</p>
+    `;
+    startLoveShower();
+  }
+
+  function startLoveShower() {
+    const lines = [
+      "Thank you for choosing me every day 💖",
+      "You are my home, always 🏡",
+      "Everything good in me began with you 🌸",
+      "I am brave because you believed in me ✨",
+      "I love you more than words, Shonu 💕"
+    ];
+
+    lines.forEach((text, i) => {
+      setTimeout(() => {
+        const div = document.createElement("div");
+        div.className = "love-line";
+        div.innerText = text;
+        div.style.left = Math.random() * 70 + 10 + "%";
+        div.style.top = Math.random() * 70 + 10 + "%";
+        document.body.appendChild(div);
+
+        setTimeout(() => div.remove(), 3500);
+      }, i * 900);
+    });
+
+    setTimeout(showGifts, 5200);
+  }
+
+  function showGifts() {
+    content.innerHTML = `
+      <h2>One last thing 😌</h2>
+      <p>If you had to choose…</p>
+      <button class="option" onclick="both()">Flowers 🌸</button>
+      <button class="option" onclick="both()">Chocolates 🍫</button>
+    `;
+  }
+
+  function both() {
+    content.innerHTML = `
+      <h2>You don’t have to choose 💖</h2>
+      <h2>You get BOTH 🌸🍫</h2>
+      <p>Happy Valentine’s Day, Shonu.<br>I love you forever.</p>
+    `;
+  }
+</script>
+
+</body>
+</html>
