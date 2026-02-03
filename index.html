@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>What Car Are You?</title>
+<title>Car Personality Quiz</title>
 
 <style>
+/* ---------- BASE ---------- */
 body {
   margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #f4f6f8;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background: #eef1f4;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -17,172 +18,255 @@ body {
   transition: background 1.5s ease;
 }
 
-.container {
-  background: white;
-  width: 92%;
-  max-width: 620px;
+.app {
+  background: #ffffff;
+  width: 95%;
+  max-width: 700px;
   padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.18);
-  text-align: center;
-  animation: fadeIn 0.8s ease forwards;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.15);
 }
 
-h1, h2 { margin-bottom: 15px; }
-p { font-size: 1.05em; line-height: 1.6; }
+/* ---------- HEADER ---------- */
+.header {
+  text-align: center;
+  margin-bottom: 25px;
+}
 
+.header h1 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+.header p {
+  color: #555;
+}
+
+/* ---------- PROGRESS ---------- */
+.progress-wrap {
+  background: #e4e7eb;
+  height: 8px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: #3b82f6;
+  transition: width 0.4s ease;
+}
+
+/* ---------- QUESTION ---------- */
+.question-count {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.question {
+  font-size: 1.3em;
+  margin-bottom: 20px;
+}
+
+/* ---------- OPTIONS ---------- */
+.option {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, border 0.2s ease;
+}
+
+.option:hover {
+  background: #f3f6fa;
+  border-color: #3b82f6;
+}
+
+/* ---------- BUTTON ---------- */
 button {
-  margin-top: 20px;
+  margin-top: 25px;
   padding: 12px 28px;
   border-radius: 10px;
   border: none;
+  background: #111827;
+  color: white;
   font-size: 1em;
   cursor: pointer;
-  background: #111;
-  color: white;
 }
 
-.option {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  background: #e9ecef;
-  color: #000;
+/* ---------- PROCESSING ---------- */
+.center {
+  text-align: center;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Valentine mode */
+/* ---------- VALENTINE MODE ---------- */
 body.valentine {
-  background: radial-gradient(circle, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg, #ffd6e8, #ffeef6);
 }
 
-/* Floating hearts etc */
-.float {
+.soft-float {
   position: fixed;
   bottom: -10%;
-  font-size: 2.2em;
+  font-size: 1.6em;
   animation: floatUp linear infinite;
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
 @keyframes floatUp {
   from { transform: translateY(0); }
-  to { transform: translateY(-130vh); }
+  to { transform: translateY(-120vh); }
 }
 
-#no {
-  position: absolute;
-  background: #aaa;
-}
-
-/* PHOTO — CHANGE FILENAME HERE */
+/* ---------- PHOTO ---------- */
 .photo {
-  width: 190px;
-  height: 190px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   object-fit: cover;
   margin: 20px auto;
   display: block;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* ---------- NO BUTTON ---------- */
+#no {
+  position: absolute;
+  background: #9ca3af;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container" id="content">
-  <h1>🚗 What Car Are You?</h1>
-  <p>A highly accurate quiz for car people only.</p>
-  <button onclick="q1()">Start Quiz</button>
+<div class="app" id="app">
+
+  <div class="header">
+    <h1>What Car Matches Your Personality?</h1>
+    <p>A short personality quiz for people who genuinely care about cars.</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div id="content"></div>
+
 </div>
 
 <script>
+const questions = [
+  {
+    q: "How would you describe your driving style?",
+    options: [
+      "Calm, aware, and controlled",
+      "Confident with moments of speed",
+      "Protective and alert at all times",
+      "Depends on the mood"
+    ]
+  },
+  {
+    q: "What do you value most in a car?",
+    options: [
+      "Reliability",
+      "Comfort",
+      "Road presence",
+      "All of the above"
+    ]
+  },
+  {
+    q: "Your ideal drive looks like:",
+    options: [
+      "Late-night roads and quiet music",
+      "Long highway drives",
+      "Quick food runs that turn into drives",
+      "Sitting in the car talking"
+    ]
+  },
+  {
+    q: "People would describe you as:",
+    options: [
+      "Dependable",
+      "Protective",
+      "Quietly confident",
+      "A mix of everything"
+    ]
+  }
+];
+
+let current = 0;
 const content = document.getElementById("content");
+const progress = document.getElementById("progress");
 
-/* Engine sound */
-function engineSound() {
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = "sawtooth";
-  osc.frequency.setValueAtTime(120, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(420, ctx.currentTime + 0.6);
-  gain.gain.setValueAtTime(0.05, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
-  osc.connect(gain).connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime + 0.6);
-}
+loadQuestion();
 
-/* Quiz */
-function q1() {
+function loadQuestion() {
+  const q = questions[current];
+  progress.style.width = ((current) / questions.length) * 100 + "%";
+
   content.innerHTML = `
-    <h2>Your driving style?</h2>
-    <button class="option" onclick="q2()">Calm but alert 🛞</button>
-    <button class="option" onclick="q2()">Fast but controlled 🏁</button>
-    <button class="option" onclick="q2()">Unnecessarily aggressive 🚨</button>
+    <div class="question-count">Question ${current + 1} of ${questions.length}</div>
+    <div class="question">${q.q}</div>
+    ${q.options.map(opt => `<div class="option" onclick="next()">${opt}</div>`).join("")}
   `;
 }
 
-function q2() {
+function next() {
+  current++;
+  if (current < questions.length) {
+    loadQuestion();
+  } else {
+    showProcessing();
+  }
+}
+
+function showProcessing() {
+  progress.style.width = "100%";
   content.innerHTML = `
-    <h2>What matters more?</h2>
-    <button class="option" onclick="q3()">Reliability</button>
-    <button class="option" onclick="q3()">Comfort</button>
-    <button class="option" onclick="q3()">Road presence</button>
+    <div class="center">
+      <h2>Analysing your responses…</h2>
+      <p>Matching personality traits with vehicle profiles.</p>
+    </div>
+  `;
+  setTimeout(showResult, 2500);
+}
+
+function showResult() {
+  content.innerHTML = `
+    <div class="center">
+      <h2>Your Result</h2>
+      <h1>Kia Seltos (Grey)</h1>
+      <p>Balanced, dependable, and protective without trying.</p>
+      <p>A car that feels familiar, solid, and safe.</p>
+      <button onclick="passenger()">Continue</button>
+    </div>
   `;
 }
 
-function q3() {
-  content.innerHTML = `
-    <h2>Ideal drive?</h2>
-    <button class="option" onclick="process()">Late-night drives 🌙</button>
-    <button class="option" onclick="process()">Food runs 🍔</button>
-    <button class="option" onclick="process()">Just sitting 🎧</button>
-  `;
-}
-
-function process() {
-  content.innerHTML = `
-    <h2>Processing…</h2>
-    <p>Calculating horsepower and vibes.</p>
-  `;
-  setTimeout(result, 2300);
-}
-
-function result() {
-  engineSound();
-  content.innerHTML = `
-    <h1>You are…</h1>
-    <h2>Kia Seltos (Grey)</h2>
-    <p>Protective. Dependable. Strong presence.</p>
-    <p>The kind of car that feels like a safe place.</p>
-    <button onclick="passenger()">Next</button>
-  `;
-}
-
+/* ---------- TRANSITION ---------- */
 function passenger() {
   content.innerHTML = `
-    <p>Now you need someone to ride with you in this car.</p>
-    <p><strong>Your permanent passenger princess.</strong></p>
-    <button onclick="valentine()">Next</button>
+    <div class="center">
+      <p>Every great car deserves the right person in the passenger seat.</p>
+      <button onclick="valentine()">Next</button>
+    </div>
   `;
 }
 
-/* Valentine */
+/* ---------- VALENTINE ---------- */
 function valentine() {
   document.body.classList.add("valentine");
-  spawnChaos();
+  spawnHearts();
   content.innerHTML = `
-    <h1>Quick question 🌹</h1>
-    <p>Will you be my Valentine and make me</p>
-    <h2>your passenger princess forever?</h2>
-    <button onclick="yes()">YES</button>
-    <button id="no" onmouseover="run()">NO</button>
+    <div class="center">
+      <h2>So…</h2>
+      <p>Will you be my Valentine</p>
+      <h2>and make me your passenger princess?</h2>
+      <button onclick="yes()">YES</button>
+      <button id="no" onmouseover="run()">NO</button>
+    </div>
   `;
 }
 
@@ -192,33 +276,18 @@ function run() {
   no.style.top = Math.random() * 80 + "%";
 }
 
-/* Confetti */
-function confettiBlast() {
-  for (let i = 0; i < 40; i++) {
-    const c = document.createElement("div");
-    c.className = "float";
-    c.innerHTML = "🎊";
-    c.style.left = Math.random() * 100 + "%";
-    c.style.animationDuration = 4 + Math.random() * 3 + "s";
-    document.body.appendChild(c);
-  }
-}
-
-/* After YES — PHOTO SHOWS HERE */
+/* ---------- AFTER YES ---------- */
 const lines = [
-  "I like you. A lot.",
-  "You’re really protective, and I notice that.",
-  "I genuinely enjoy being around you.",
-  "You’re annoying. Extremely.",
-  "But somehow that makes everything fun.",
-  "I’m really hopeful about this new situation.",
-  "If you said no, I would have fought you."
+  "I like you. I really do.",
+  "I enjoy being around you more than I expected.",
+  "You make things feel easy and safe.",
+  "You’re annoying — but in a way I weirdly like.",
+  "I feel hopeful about where this is going."
 ];
 
 let idx = 0;
 
 function yes() {
-  confettiBlast();
   showLine();
 }
 
@@ -227,36 +296,36 @@ function showLine() {
     final();
     return;
   }
-
   content.innerHTML = `
-    <img src="shonu.jpg.JPG" class="photo">
+    <img src="pearl.jpg" class="photo">
     <p>${lines[idx]}</p>
-    <button onclick="next()">Next</button>
+    <button onclick="nextLine()">Next</button>
   `;
   idx++;
 }
 
-function next() {
+function nextLine() {
   showLine();
 }
 
 function final() {
   content.innerHTML = `
-    <h1>One last thing.</h1>
-    <p>You asked me first.</p>
-    <h2>And my answer is yes.</h2>
+    <div class="center">
+      <h2>You asked me first.</h2>
+      <h1>And my answer is yes.</h1>
+    </div>
   `;
 }
 
-/* Floating hearts */
-function spawnChaos() {
-  for (let i = 0; i < 30; i++) {
-    const el = document.createElement("div");
-    el.className = "float";
-    el.innerHTML = ["💖","🌹","🎈","🚗"][Math.floor(Math.random()*4)];
-    el.style.left = Math.random() * 100 + "%";
-    el.style.animationDuration = 6 + Math.random() * 6 + "s";
-    document.body.appendChild(el);
+/* ---------- HEARTS ---------- */
+function spawnHearts() {
+  for (let i = 0; i < 20; i++) {
+    const h = document.createElement("div");
+    h.className = "soft-float";
+    h.innerHTML = "💗";
+    h.style.left = Math.random() * 100 + "%";
+    h.style.animationDuration = 6 + Math.random() * 6 + "s";
+    document.body.appendChild(h);
   }
 }
 </script>
